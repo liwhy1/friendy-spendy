@@ -1,9 +1,9 @@
 const cacheName = "ILT-project_spendbuddy-0.1";
 const contentToCache = [
     "Build/psb.loader.js",
-    "Build/psb.framework.js.unityweb",
-    "Build/psb.data.unityweb",
-    "Build/psb.wasm.unityweb",
+    "Build/psb.framework.js",
+    "Build/psb.data",
+    "Build/psb.wasm",
     "TemplateData/style.css"
 
 ];
