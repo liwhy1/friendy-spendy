@@ -1,106 +1,93 @@
-function createUnityInstance(canvas, config, onProgress) {
-    function showBanner(message, type) {
-        if (showBanner.aborted) return;
-        if (config.showBanner) {
-            if (type === "error") showBanner.aborted = true;
-            config.showBanner(message, type);
+function createUnityInstance(t, n, d) {
+    function c(e, t) {
+        if (!c.aborted && n.showBanner) {
+            if (t === "error") c.aborted = true;
+            n.showBanner(e, t);
         }
-        switch (type) {
-            case "error": console.error(message); break;
-            case "warning": console.warn(message); break;
-            default: console.log(message);
-        }
-    }
-
-    function handleError(event) {
-        let error = event.reason || event.error;
-        let message = error ? error.toString() : event.message || event.reason || "";
-        let stackTrace = error && error.stack ? error.stack.toString() : "";
-        if (message) {
-            message += "\n" + (stackTrace.startsWith(message) ? stackTrace.substring(message.length) : stackTrace).trim();
-        }
-        if (instance.stackTraceRegExp && instance.stackTraceRegExp.test(message)) {
-            showError(message, event.filename || error?.fileName || error?.sourceURL || "", event.lineno || error?.lineNumber || error?.line || 0);
+        switch (t) {
+            case "error":
+                console.error(e);
+                break;
+            case "warning":
+                console.warn(e);
+                break;
+            default:
+                console.log(e);
         }
     }
 
-    function setDefault(config, key, defaultValue) {
-        if (!config[key]) {
-            console.warn(`Config option "${key}" is missing or empty. Falling back to default value: "${defaultValue}".`);
-            config[key] = defaultValue;
+    function r(e) {
+        var t = e.reason || e.error;
+        var n = t ? t.toString() : e.message || e.reason || "";
+        var r = t && t.stack ? t.stack.toString() : "";
+        n += "\n" + (r.startsWith(n) ? r.substring(n.length) : r).trim();
+        if (n && m.stackTraceRegExp && m.stackTraceRegExp.test(n)) {
+            P(n, e.filename || (t && (t.fileName || t.sourceURL)) || "", e.lineno || (t && (t.lineNumber || t.line)) || 0);
         }
     }
 
-    onProgress = onProgress || function() {};
-    let instance = {
-        canvas: canvas,
-        webglContextAttributes: { preserveDrawingBuffer: false, powerPreference: "high-performance" },
+    function e(e, t, n) {
+        var r = e[t];
+        if (r === undefined || r === null) {
+            console.warn(`Config option "${t}" is missing or empty. Falling back to default value: "${n}".`);
+            e[t] = n;
+        }
+    }
+
+    d = d || function () {};
+    var o, m = {
+        canvas: t,
+        webglContextAttributes: {
+            preserveDrawingBuffer: false,
+            powerPreference: 2
+        },
         wasmFileSize: 57214263,
-        cacheControl: (url) => url === instance.dataUrl || url.match(/\.bundle/) ? "must-revalidate" : "no-store",
+        cacheControl: function (e) {
+            return e == m.dataUrl || e.match(/\.bundle/) ? "must-revalidate" : "no-store";
+        },
         streamingAssetsUrl: "StreamingAssets",
         downloadProgress: {},
         deinitializers: [],
         intervals: {},
-        setInterval: function(callback, time) {
-            let id = window.setInterval(callback, time);
-            this.intervals[id] = true;
-            return id;
+        setInterval: function (e, t) {
+            e = window.setInterval(e, t);
+            this.intervals[e] = true;
+            return e;
         },
-        clearInterval: function(id) {
-            delete this.intervals[id];
-            window.clearInterval(id);
+        clearInterval: function (e) {
+            delete this.intervals[e];
+            window.clearInterval(e);
         },
         preRun: [],
         postRun: [],
-        print: console.log,
-        printErr: function(message) {
-            console.error(message);
-            if (typeof message === "string" && message.includes("wasm streaming compile failed")) {
-                if (message.toLowerCase().includes("mime")) {
-                    showBanner(`HTTP Response Header "Content-Type" configured incorrectly for file ${instance.codeUrl}. Should be "application/wasm".`, "warning");
-                } else {
-                    showBanner("WebAssembly streaming compilation failed! Check the server configuration.", "warning");
-                }
-            }
+        print: function (e) {
+            console.log(e);
         },
-        locateFile: function(filename) {
-            return filename === "build.wasm" ? this.codeUrl : filename;
+        printErr: function (e) {
+            console.error(e);
+        },
+        locateFile: function (e) {
+            return e === "build.wasm" ? this.codeUrl : e;
         },
         disabledCanvasEvents: ["contextmenu", "dragstart"]
     };
 
-    setDefault(config, "companyName", "Unity");
-    setDefault(config, "productName", "WebGL Player");
-    setDefault(config, "productVersion", "1.0");
-
-    Object.assign(instance, config);
-    instance.streamingAssetsUrl = new URL(instance.streamingAssetsUrl, document.URL).href;
-
-    // Disable unwanted canvas events
-    instance.disabledCanvasEvents.forEach(event => canvas.addEventListener(event, e => e.preventDefault()));
-
-    window.addEventListener("error", handleError);
-    window.addEventListener("unhandledrejection", handleError);
-
-    function toggleFullScreen(event) {
-        if (document.webkitCurrentFullScreenElement === canvas) {
-            canvas.style.width = "100%";
-            canvas.style.height = "100%";
-        } else {
-            canvas.style.width = "";
-            canvas.style.height = "";
-        }
+    for (o in e(n, "companyName", "Unity"), e(n, "productName", "WebGL Player"), e(n, "productVersion", "1.0"), n) {
+        m[o] = n[o];
     }
 
-    document.addEventListener("webkitfullscreenchange", toggleFullScreen);
-    instance.deinitializers.push(() => {
-        instance.disabledCanvasEvents.forEach(event => canvas.removeEventListener(event, e => e.preventDefault()));
-        window.removeEventListener("error", handleError);
-        window.removeEventListener("unhandledrejection", handleError);
-        document.removeEventListener("webkitfullscreenchange", toggleFullScreen);
-        Object.keys(instance.intervals).forEach(id => window.clearInterval(id));
-        instance.intervals = {};
+    m.streamingAssetsUrl = new URL(m.streamingAssetsUrl, document.URL).href;
+    var a = m.disabledCanvasEvents.slice();
+
+    function i(e) {
+        e.preventDefault();
+    }
+
+    a.forEach(function (e) {
+        t.addEventListener(e, i);
     });
+    window.addEventListener("error", r);
+    window.addEventListener("unhandledrejection", r);
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/service-worker.js').then((registration) => {
@@ -115,14 +102,4 @@ function createUnityInstance(canvas, config, onProgress) {
             });
         });
     }
-
-    return new Promise((resolve, reject) => {
-        if (!instance.SystemInfo.hasWebGL) {
-            reject("Your browser does not support WebGL.");
-        } else if (!instance.SystemInfo.hasWasm) {
-            reject("Your browser does not support WebAssembly.");
-        } else {
-            resolve({ Module: instance });
-        }
-    });
 }
