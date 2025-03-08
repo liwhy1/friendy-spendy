@@ -1,9 +1,9 @@
 const cacheName = "ILT-project_spendbuddy-0.1";
 const contentToCache = [
     "Build/psb.loader.js",
-    "Build/psb.framework.js",
-    "Build/psb.data",
-    "Build/psb.wasm",
+    "Build/psb.framework.js.br",
+    "Build/psb.data.br",
+    "Build/psb.wasm.br",
     "TemplateData/style.css"
 
 ];
@@ -30,4 +30,10 @@ self.addEventListener('fetch', function (e) {
       cache.put(e.request, response.clone());
       return response;
     })());
+});
+
+self.addEventListener('message', (event) => {
+    if (event.data === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });
