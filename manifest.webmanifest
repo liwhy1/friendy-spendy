@@ -1,6 +1,6 @@
 {
-    "name": "project_spendbuddy",
-    "short_name": "project_spendbuddy",
+    "name": "friendy-spendy",
+    "short_name": "friendy-spendy",
     "start_url": "index.html",
     "display": "fullscreen",
     "background_color": "#231F20",
