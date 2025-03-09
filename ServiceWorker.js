@@ -1,4 +1,4 @@
-const cacheName = "ILT-project_spendbuddy-0.2";
+const cacheName = "ILT-project_spendbuddy-0.3";
 const contentToCache = [
     "Build/project_spendbuddy.loader.js",
     "Build/project_spendbuddy.framework.js",
