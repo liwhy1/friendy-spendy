@@ -1,11 +1,11 @@
 {
     "name": "Friendy-Spendy",
-    "short_name": "friendy-Spendy",
+    "short_name": "Friendy-Spendy",
     "start_url": "index.html",
     "display": "fullscreen",
     "background_color": "#231F20",
     "theme_color": "#000",
-    "description": "friendy-Spendy",
+    "description": "Friendy-Spendy",
     "icons": [{
       "src": "TemplateData/logo.png",
       "sizes": "144x144",
